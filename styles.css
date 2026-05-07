@@ -1,0 +1,868 @@
+/* ==========================================================================
+   CSS Variables & Tokens - Senior Design Adjustments
+   ========================================================================== */
+:root {
+    /* Colors */
+    --bg-dark: #030303; /* Deeper, richer black */
+    --bg-light: #F2F0E9; /* Warmer, more sophisticated off-white */
+    --accent-lime: #D2FA23; /* Slightly more electric/acid lime */
+    
+    --text-white: #EBEBEB; /* Softer on the eyes than pure white */
+    --text-dim: rgba(255, 255, 255, 0.45); /* More subtle */
+    --text-dark: #0A0A0A;
+    
+    --glass-bg: rgba(255, 255, 255, 0.015); /* Ultra-subtle glass */
+    --glass-border: rgba(255, 255, 255, 0.03);
+    
+    /* Typography */
+    --font-serif: 'Cormorant Garamond', serif;
+    --font-sans: 'Inter', sans-serif;
+    
+    /* Layout */
+    --container-max-width: 1400px; /* Wider for more negative space */
+    --padding-x: 5vw;
+    
+    /* Transitions */
+    --transition-smooth: 0.8s cubic-bezier(0.16, 1, 0.3, 1); /* High-end easing */
+    --transition-fast: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ==========================================================================
+   Reset & Base Styles
+   ========================================================================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+    font-size: 15px; /* Slightly smaller base for editorial feel */
+}
+
+body {
+    background-color: var(--bg-dark);
+    color: var(--text-white);
+    font-family: var(--font-sans);
+    line-height: 1.6;
+    letter-spacing: -0.01em; /* Tighter body copy */
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* ==========================================================================
+   Utility Classes & Typography
+   ========================================================================== */
+.container {
+    max-width: var(--container-max-width);
+    margin: 0 auto;
+    padding: 0 var(--padding-x);
+}
+
+.text-center { text-align: center; }
+.relative-z { position: relative; z-index: 10; }
+
+.lime-text {
+    color: var(--accent-lime);
+}
+
+.lime-dot {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    background-color: var(--accent-lime);
+    border-radius: 50%;
+    margin-right: 12px;
+    vertical-align: middle;
+    box-shadow: 0 0 12px rgba(210, 250, 35, 0.6); /* Premium neon glow */
+}
+
+.serif-italic {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 300;
+}
+
+.dark-text {
+    color: var(--text-dark);
+}
+
+/* ==========================================================================
+   Effects
+   ========================================================================== */
+/* Cinematic Noise Overlay */
+.noise-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.035; /* Even more subtle */
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+}
+
+/* Glassmorphism Card */
+.glass-card {
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+    border-radius: 1px; /* Brutalist sharp corners */
+    transition: var(--transition-smooth);
+}
+
+/* Pill Buttons */
+.pill-btn {
+    display: inline-block;
+    background-color: var(--accent-lime);
+    color: var(--bg-dark);
+    padding: 12px 28px;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.85rem;
+    letter-spacing: 0.02em;
+    transition: var(--transition-fast);
+    border: 1px solid transparent;
+    position: relative;
+    overflow: hidden;
+}
+
+.pill-btn::after {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%; width: 100%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+    transition: all 0.6s ease;
+}
+
+.pill-btn:hover::after {
+    left: 100%;
+}
+
+.pill-btn:hover {
+    box-shadow: 0 0 24px rgba(210, 250, 35, 0.3);
+    transform: translateY(-2px) scale(1.02);
+}
+
+.pill-btn.large {
+    padding: 18px 48px;
+    font-size: 1rem;
+}
+
+/* ==========================================================================
+   Navbar
+   ========================================================================== */
+.navbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: 90px;
+    z-index: 1000;
+    background: transparent;
+    border-bottom: 1px solid transparent;
+    display: flex;
+    align-items: center;
+    transition: var(--transition-smooth);
+}
+
+.navbar.scrolled {
+    height: 70px;
+    background: rgba(3, 3, 3, 0.8);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--glass-border);
+}
+
+.nav-container {
+    width: 100%;
+    max-width: var(--container-max-width);
+    margin: 0 auto;
+    padding: 0 var(--padding-x);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.nav-left {
+    display: flex;
+    align-items: center;
+    font-weight: 400;
+    font-size: 0.9rem;
+    letter-spacing: 0.02em;
+}
+
+.nav-center {
+    display: flex;
+    gap: 40px;
+}
+
+.nav-center a {
+    color: var(--text-dim);
+    text-decoration: none;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    transition: var(--transition-fast);
+    position: relative;
+}
+
+.nav-center a::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 0%;
+    height: 1px;
+    background-color: var(--accent-lime);
+    transition: var(--transition-fast);
+}
+
+.nav-center a:hover {
+    color: var(--text-white);
+}
+
+.nav-center a:hover::after {
+    width: 100%;
+}
+
+/* ==========================================================================
+   Hero Section
+   ========================================================================== */
+.hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-top: 120px; 
+    overflow: hidden;
+}
+
+.hero-glow {
+    position: absolute;
+    top: 10%;
+    right: -15%;
+    width: 70vw;
+    height: 70vw;
+    background: radial-gradient(circle, rgba(210,250,35,0.06) 0%, rgba(3,3,3,0) 65%);
+    z-index: 0;
+    pointer-events: none;
+}
+
+.hero-container {
+    display: grid;
+    grid-template-columns: 1.4fr 0.6fr;
+    gap: 40px;
+    flex-grow: 1;
+    align-items: center;
+    position: relative;
+    z-index: 1;
+}
+
+.hero-title {
+    font-family: var(--font-serif);
+    font-size: clamp(4rem, 8vw, 7.5rem);
+    font-weight: 300;
+    line-height: 0.95; /* Ultra tight for editorial look */
+    letter-spacing: -0.03em;
+    margin-bottom: 40px;
+    color: #F8F8F8;
+    text-indent: -0.05em; /* Optical alignment */
+}
+
+.hero-subtitle {
+    color: var(--text-dim);
+    font-size: 1.05rem;
+    max-width: 420px; /* Narrower for better reading rhythm */
+    margin-bottom: 56px;
+    font-weight: 300;
+    line-height: 1.7;
+}
+
+.hero-cta-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+}
+
+.cta-helper {
+    color: var(--text-dim);
+    font-size: 0.85rem;
+    font-style: italic;
+    font-family: var(--font-serif);
+    letter-spacing: 0.02em;
+}
+
+.hero-footer {
+    width: 100%;
+    padding: 40px var(--padding-x);
+    max-width: var(--container-max-width);
+    margin: 0 auto;
+    position: relative;
+}
+
+.meta-line {
+    display: block;
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(90deg, var(--glass-border) 0%, transparent 100%);
+    margin-bottom: 24px;
+}
+
+.meta-content {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.7rem;
+    color: var(--text-dim);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+/* ==========================================================================
+   Marquee Strip
+   ========================================================================== */
+.marquee-strip {
+    border-top: 1px solid var(--glass-border);
+    border-bottom: 1px solid var(--glass-border);
+    padding: 32px 0;
+    overflow: hidden;
+    white-space: nowrap;
+    position: relative;
+    background-color: var(--bg-dark);
+}
+
+.marquee-content {
+    display: inline-block;
+    animation: marquee 40s linear infinite; /* Slower */
+}
+
+.marquee-content span {
+    font-family: var(--font-serif);
+    font-size: 2rem; /* Larger */
+    font-style: italic;
+    font-weight: 300;
+    color: var(--text-dim);
+    margin: 0 32px;
+    vertical-align: middle;
+}
+
+@keyframes marquee {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+}
+
+/* ==========================================================================
+   Sections Base
+   ========================================================================== */
+.section-dark {
+    background-color: var(--bg-dark);
+    padding: 200px 0; /* Huge padding for sophisticated whitespace */
+}
+
+.section-light {
+    background-color: var(--bg-light);
+    color: var(--text-dark);
+    padding: 200px 0;
+}
+
+.section-title {
+    font-family: var(--font-serif);
+    font-size: clamp(3rem, 5vw, 4.5rem);
+    font-weight: 300;
+    margin-bottom: 80px;
+    line-height: 1;
+    letter-spacing: -0.02em;
+}
+
+/* ==========================================================================
+   Statement Section ("Você já perdeu tempo...")
+   ========================================================================== */
+.huge-statement {
+    font-family: var(--font-serif);
+    font-size: clamp(3rem, 6vw, 5.5rem);
+    font-weight: 300;
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+    max-width: 1000px;
+    margin-bottom: 100px;
+}
+
+.two-col-text {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 100px;
+    color: var(--text-dim);
+    font-size: 1rem;
+    font-weight: 300;
+    line-height: 1.8;
+}
+
+/* ==========================================================================
+   Methodology Section (Blueprint Grid)
+   ========================================================================== */
+.blueprint-bg {
+    position: relative;
+    background-image: 
+        linear-gradient(rgba(0,0,0,0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,0,0,0.02) 1px, transparent 1px);
+    background-size: 60px 60px;
+}
+
+.methodology-container {
+    display: grid;
+    grid-template-columns: 0.2fr 1fr;
+    gap: 60px;
+}
+
+.small-label {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: rgba(5,5,5,0.4);
+    font-weight: 500;
+}
+
+.editorial-text {
+    font-family: var(--font-serif);
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+    margin-bottom: 64px;
+    max-width: 900px;
+    font-weight: 400;
+}
+
+.badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.badge {
+    border: 1px solid rgba(5,5,5,0.15);
+    padding: 10px 24px;
+    border-radius: 50px;
+    font-size: 0.7rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    transition: var(--transition-fast);
+    background: transparent;
+}
+
+.badge:hover {
+    background-color: var(--text-dark);
+    color: var(--bg-light);
+    border-color: var(--text-dark);
+}
+
+/* ==========================================================================
+   Principles Section
+   ========================================================================== */
+.principles-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2px; /* Brutalist hairline grid */
+    background: var(--glass-border); 
+    border: 1px solid var(--glass-border);
+}
+
+.principle-card {
+    padding: 80px 60px;
+    background: var(--bg-dark); /* Solid dark instead of glass for brutalism */
+    border: none;
+    border-radius: 0;
+}
+
+.principle-card:hover {
+    transform: none;
+    background: #080808; /* Very subtle hover */
+}
+
+.card-icon {
+    margin-bottom: 48px;
+}
+
+.principle-card h3 {
+    font-size: 2rem;
+    font-family: var(--font-serif);
+    margin-bottom: 24px;
+    font-weight: 300;
+    letter-spacing: -0.01em;
+}
+
+.principle-card p {
+    color: var(--text-dim);
+    font-size: 0.95rem;
+    font-weight: 300;
+    line-height: 1.7;
+}
+
+/* ==========================================================================
+   "Feito pra quem" Section
+   ========================================================================== */
+.minimal-list {
+    list-style: none;
+    border-top: 1px solid rgba(0,0,0,0.1);
+}
+
+.minimal-list li {
+    display: flex;
+    align-items: flex-start;
+    padding: 60px 0;
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+    gap: 60px;
+    transition: var(--transition-fast);
+}
+
+.minimal-list li:hover {
+    padding-left: 20px;
+    background: linear-gradient(90deg, rgba(0,0,0,0.02), transparent);
+}
+
+.minimal-list .num {
+    font-family: var(--font-sans);
+    font-size: 0.8rem;
+    letter-spacing: 0.1em;
+    color: rgba(0,0,0,0.4);
+    min-width: 80px;
+    margin-top: 8px; /* Alignment tweak */
+}
+
+.minimal-list .text {
+    font-family: var(--font-serif);
+    font-size: 2.5rem;
+    font-weight: 300;
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+}
+
+/* ==========================================================================
+   Testimonial Section
+   ========================================================================== */
+.testimonial-container {
+    max-width: 1200px;
+}
+
+.testimonial-card {
+    padding: 100px;
+    text-align: left; /* Editorial alignment */
+    border-left: 2px solid var(--accent-lime);
+    border-radius: 0;
+    background: linear-gradient(90deg, rgba(255,255,255,0.02), transparent);
+}
+
+.quote {
+    font-family: var(--font-serif);
+    font-size: clamp(2.2rem, 4vw, 3.5rem);
+    line-height: 1.15;
+    font-style: italic;
+    margin-bottom: 64px;
+    color: #F8F8F8;
+    letter-spacing: -0.01em;
+}
+
+.quote-footer {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+    font-size: 0.85rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+.quote-footer strong {
+    font-weight: 500;
+    color: var(--text-white);
+}
+
+.quote-footer span {
+    color: var(--text-dim);
+    font-size: 0.75rem;
+}
+
+/* ==========================================================================
+   FAQ Section
+   ========================================================================== */
+.accordion {
+    max-width: 900px;
+    margin: 0 auto;
+    border-top: 1px solid var(--glass-border);
+}
+
+.accordion-item {
+    border-bottom: 1px solid var(--glass-border);
+}
+
+.accordion-header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 40px 0;
+    background: none;
+    border: none;
+    color: var(--text-white);
+    font-family: var(--font-serif);
+    font-size: 2rem;
+    font-weight: 300;
+    cursor: pointer;
+    text-align: left;
+    transition: var(--transition-fast);
+}
+
+.accordion-header:hover {
+    color: var(--accent-lime);
+    padding-left: 20px;
+}
+
+.accordion-header .icon {
+    font-family: var(--font-sans);
+    font-size: 1.5rem;
+    font-weight: 300;
+    color: var(--text-dim);
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.accordion-header.active .icon {
+    transform: rotate(45deg);
+    color: var(--accent-lime);
+}
+
+.accordion-content {
+    max-height: 0;
+    padding: 0;
+    color: var(--text-dim);
+    font-size: 1rem;
+    font-weight: 300;
+    line-height: 1.8;
+    transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    opacity: 0;
+}
+
+.accordion-header.active + .accordion-content {
+    max-height: 300px;
+    padding-bottom: 40px;
+    padding-left: 20px; /* Aligns with hover state */
+    opacity: 1;
+}
+
+/* ==========================================================================
+   Final CTA
+   ========================================================================== */
+.final-cta-section {
+    position: relative;
+    padding: 240px 0;
+    overflow: hidden;
+}
+
+.central-glow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 50vw;
+    height: 50vw;
+    background: radial-gradient(circle, rgba(210,250,35,0.08) 0%, rgba(3,3,3,0) 60%);
+    pointer-events: none;
+}
+
+.final-cta-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.final-cta-content .huge-statement {
+    margin-bottom: 64px;
+    text-align: center;
+}
+
+.cta-pulse {
+    animation: pulse 3s infinite cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(210, 250, 35, 0.2); }
+    70% { box-shadow: 0 0 0 20px rgba(210, 250, 35, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(210, 250, 35, 0); }
+}
+
+.cta-helper-bottom {
+    margin-top: 32px;
+    color: var(--text-dim);
+    font-size: 0.8rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+/* ==========================================================================
+   Footer
+   ========================================================================== */
+.footer {
+    border-top: 1px solid var(--glass-border);
+    padding: 60px 0;
+    background-color: var(--bg-dark);
+}
+
+.footer-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.footer-left {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.footer-desc {
+    color: var(--text-dim);
+    font-size: 0.8rem;
+    letter-spacing: 0.02em;
+}
+
+.footer-right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 24px;
+}
+
+.footer-links {
+    display: flex;
+    gap: 32px;
+}
+
+.footer-links a {
+    color: var(--text-dim);
+    text-decoration: none;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    transition: var(--transition-fast);
+}
+
+.footer-links a:hover {
+    color: var(--text-white);
+}
+
+.copyright {
+    color: rgba(255,255,255,0.2);
+    font-size: 0.7rem;
+    letter-spacing: 0.05em;
+}
+
+/* ==========================================================================
+   Animations & Reveal Classes
+   ========================================================================== */
+.fade-in {
+    opacity: 0;
+    animation: fadeIn var(--transition-smooth) forwards;
+}
+
+.fade-in-up {
+    opacity: 0;
+    transform: translateY(40px);
+    animation: fadeInUp var(--transition-smooth) forwards;
+}
+
+@keyframes fadeIn {
+    to { opacity: 1; }
+}
+
+@keyframes fadeInUp {
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.reveal {
+    opacity: 0;
+    transform: translateY(60px);
+    transition: all 1s cubic-bezier(0.16, 1, 0.3, 1); /* Slower, more elegant reveal */
+}
+
+.reveal.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ==========================================================================
+   Responsive Design (Mobile)
+   ========================================================================== */
+@media (max-width: 992px) {
+    .hero-container {
+        grid-template-columns: 1fr;
+    }
+    
+    .two-col-text {
+        grid-template-columns: 1fr;
+        gap: 40px;
+    }
+
+    .principles-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .methodology-container {
+        grid-template-columns: 1fr;
+    }
+    
+    .testimonial-card {
+        padding: 60px 40px;
+    }
+}
+
+@media (max-width: 768px) {
+    :root {
+        --padding-x: 6vw;
+    }
+
+    .nav-center {
+        display: none; 
+    }
+    
+    .section-dark, .section-light {
+        padding: 100px 0; /* Reduced for mobile but still breathable */
+    }
+
+    .huge-statement {
+        margin-bottom: 60px;
+    }
+
+    .minimal-list li {
+        flex-direction: column;
+        gap: 20px;
+        padding: 40px 0;
+    }
+    
+    .footer-container {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 40px;
+    }
+    
+    .footer-right {
+        align-items: flex-start;
+    }
+    
+    .pill-btn {
+        width: 100%;
+        text-align: center;
+    }
+    
+    .hero-cta-wrapper {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .accordion-header {
+        font-size: 1.5rem;
+    }
+}
